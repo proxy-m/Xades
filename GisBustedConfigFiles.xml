@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- Список файлов конфигурации -->
+<ConfigurationFiles>
+  <File Name="GisBusted_production.config" Title="Рабочий сервер" Type="Production" Default="true"/>
+  <File Name="GisBusted_sit2.config" Title="Тестовый стенд СИТ2"  Type="SIT2" Default="false"/>
+  <File Name="GisBusted_sit1.config" Title="Тестовый стенд СИТ1"  Type="SIT1" Default="false"/>
+</ConfigurationFiles>

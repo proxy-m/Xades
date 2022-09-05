@@ -24,10 +24,8 @@ namespace Microsoft.Xades
 	/// </summary>
 	public class SignedSignatureProperties
 	{
-	    public const string SIGNING_TIME_FORMAT = "yyyy-MM-ddTHH:mm:ss.fffzzz";
-
-	    #region Private variables
-        private DateTimeOffset signingTime;
+		#region Private variables
+		private DateTime signingTime;
 		private SigningCertificate signingCertificate;
 		private SignaturePolicyIdentifier signaturePolicyIdentifier;
 		private SignatureProductionPlace signatureProductionPlace;
@@ -41,7 +39,7 @@ namespace Microsoft.Xades
 		/// qualifies the whole signature. An XML electronic signature aligned
 		/// with the present document MUST contain exactly one SigningTime element .
 		/// </summary>
-        public DateTimeOffset SigningTime
+		public DateTime SigningTime
 		{
 			get
 			{
@@ -151,7 +149,7 @@ namespace Microsoft.Xades
 		/// </summary>
 		public SignedSignatureProperties()
 		{
-            this.signingTime = DateTimeOffset.MinValue;
+			this.signingTime = DateTime.MinValue;
 			this.signingCertificate = new SigningCertificate();
 			this.signaturePolicyIdentifier = new SignaturePolicyIdentifier();
 			this.signatureProductionPlace = new SignatureProductionPlace();
@@ -249,13 +247,16 @@ namespace Microsoft.Xades
 			creationXmlDocument = new XmlDocument();
             retVal = creationXmlDocument.CreateElement("xades", "SignedSignatureProperties", XadesSignedXml.XadesNamespaceUri);
 
-            if (this.signingTime == DateTimeOffset.MinValue)
+			if (this.signingTime == DateTime.MinValue)
 			{ //SigningTime should be available
 				this.signingTime = DateTime.Now;
 			}
+            DateTime UtcTime = signingTime.ToUniversalTime();
+
             bufferXmlElement = creationXmlDocument.CreateElement("xades", "SigningTime", XadesSignedXml.XadesNamespaceUri);
-            bufferXmlElement.InnerText = signingTime.ToString(SIGNING_TIME_FORMAT);
-			retVal.AppendChild(bufferXmlElement);
+			//bufferXmlElement.InnerText = Convert.ToString(this.signingTime.ToString("s")); //ISO 8601 format as required in http://www.w3.org/TR/xmlschema-2/#dateTime 
+            bufferXmlElement.InnerText = Convert.ToString(UtcTime.ToString("yyyy-MM-ddTHH:mm:ss.fff") + DateTime.Now.ToString(@"zzz")); //ISO 8601 format as required in http://www.w3.org/TR/xmlschema-2/#dateTime 
+            retVal.AppendChild(bufferXmlElement);
 
 			if (this.signingCertificate != null && this.signingCertificate.HasChanged())
 			{

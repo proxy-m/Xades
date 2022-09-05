@@ -1,0 +1,6 @@
+repo: 7e5905397cfdc18845f04d6943294d9de7ce534c
+node: 9cafae6527d1e6c057a62cc8587babe7666d021a
+branch: публичная ветка
+latesttag: null
+latesttagdistance: 32
+changessincelatesttag: 32
